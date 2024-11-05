@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,20 +8,17 @@
         table {
             border-collapse: collapse;
         }
-
         th,td {
             border: solid 1px black;
         }
     </style>
 </head>
-
 <body>
     <h1>Memo web app</h1>
     <progress style="width:100%;" id="use" max="10485760" value="0"></progress><span id="b">JavaScriptエラー</span><br>
     <input type="text" name="text" id="textbox" oninput="">
     <input type="button" value="追加" onclick="addmemo()">
     <input type="button" value="削除" onclick="delmemo()">
-
     <table>
         <thead>
             <tr>
@@ -32,19 +28,15 @@
         </thead>
         <tbody id="memoList"></tbody>
     </table>
-
     <script>
         let c = localStorage.getItem("kazu") ? Number(localStorage.getItem("kazu")) : 0;
-
         var limit = 10485760;
-
         function upro() {
             let element = document.getElementById("use");
             element.value = GLSS();
             element = document.getElementById("b");
             element.innerHTML = `${GLSS()}/${limit}B`;
         }
-
         function GLSS() {
             let total = 0;
             for (let key in localStorage) {
@@ -54,13 +46,10 @@
             }
             return total; // バイト単位
         }
-
-
         function addmemo() {
             const element = document.getElementById("textbox");
             const memo = element.value;
             element.value = "";
-
             if (memo) {
                 c += 1;
                 localStorage.setItem("memo" + c, memo);
@@ -69,11 +58,9 @@
             }
             upro();
         }
-
         function loadmemo() {
             const memoList = document.getElementById("memoList");
             memoList.innerHTML = ""; // Clear previous entries
-
             for (let i = 1; i <= c; i++) {
                 const memo = localStorage.getItem("memo" + i);
                 if (memo) {
@@ -82,9 +69,8 @@
                     row.insertCell(1).textContent = memo;
                 }
             }
-            upro();
+            upro()
         }
-
         function delmemo() {
             const num = prompt('消したいメモの番号');
             if (num === 'all del') {
