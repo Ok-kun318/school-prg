@@ -10,8 +10,76 @@
             border-collapse: collapse;
         }
 
-        th,td {
+        th,
+        td {
             border: solid 1px black;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        /* 入力フィールドとボタンを横並びにするコンテナ */
+        .input-container {
+            display: flex;
+            gap: 12px;
+            /* テキストボックスとボタンの間隔 */
+            align-items: center;
+        }
+
+        /* テキストボックスのスタイル */
+        .textbox {
+            flex-grow: 1;
+            /* ボックスを広げて、ボタンを残りの幅に合わせる */
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* テキストボックスにフォーカス時のスタイル */
+        .textbox:focus {
+            border-color: #007bff;
+            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+        }
+
+        /* プレースホルダーテキストのスタイル */
+        .textbox::placeholder {
+            color: #888;
+            font-style: italic;
+        }
+
+        /* ボタンのスタイル */
+        .btn {
+            padding: 10px 14px;
+            /* ボタンのサイズを少し小さめに */
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        /* ボタンのホバー時のスタイル */
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            /* 軽く上に浮かせる */
+        }
+
+        /* ボタンのフォーカス時のスタイル */
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+            /* フォーカス時にアウトラインを表示 */
         }
     </style>
 </head>
@@ -19,9 +87,12 @@
 <body>
     <h1>Memo web app</h1>
     <progress style="width:100%;" id="use" max="10485760" value="0"></progress><span id="b">JavaScriptエラー</span><br>
-    <input type="text" name="text" id="textbox" oninput="">
-    <input type="button" value="追加" onclick="addmemo()">
-    <input type="button" value="削除" onclick="delmemo()">
+    <div class="container">
+        <input accesskey="t" class="textbox" type="text" name="text" id="textbox" oninput="">
+        <input accesskey="a" class="btn" type="button" value="追加" onclick="addmemo()">
+        <input accesskey="r" class="btn" type="button" value="削除" onclick="delmemo()">
+    </div>
+
 
     <table>
         <thead>
