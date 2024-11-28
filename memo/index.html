@@ -220,7 +220,7 @@
     <h1>メモ帳</h1>
     <progress style="width:100%;" id="use" max="10485760" value="0"></progress><span id="b">JavaScriptエラー</span><br>
     <div class="container">
-        <input accesskey="q" class="textbox" type="text" name="text" id="textbox" oninput="">
+        <input accesskey="q" class="textbox" autoComplete='none' type="text" name="text" id="textbox" oninput="assist()">
         <input accesskey="a" class="btn" type="button" value="追加" onclick="addmemo()">
         <input accesskey="s" class="btn" type="button" value="削除" onclick="delmemo()">
     </div>
@@ -258,6 +258,12 @@
             return total; // バイト単位
         }
 
+        function assist() {
+            let element = document.getElementById("textbox")
+            element.value = element.value.replace("@:;b","<b></b>")
+            element.value = element.value.replace("@:;st",`<p style="color: ;"></p>`)
+            element.value = element.value.replace("@:/","<></>")
+        }
 
         function addmemo() {
             const element = document.getElementById("textbox");
@@ -272,7 +278,6 @@
             }
             upro();
         }
-
         function loadmemo() {
             const memoList = document.getElementById("memoList");
             memoList.innerHTML = ""; // Clear previous entries
