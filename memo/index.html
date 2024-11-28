@@ -81,102 +81,138 @@
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
             /* フォーカス時にアウトラインを表示 */
         }
+
         /* プログレスバーの基本スタイル */
-progress {
-    width: 100%; /* 横幅100% */
-    height: 20px; /* 高さ */
-    border-radius: 10px; /* 丸みを帯びた角 */
-    background-color: #f3f3f3; /* 背景色（未使用分） */
-    border: 2px solid #ddd; /* 薄い枠線 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
-    margin-top: 12px; /* 上部の余白 */
-}
+        progress {
+            width: 100%;
+            /* 横幅100% */
+            height: 20px;
+            /* 高さ */
+            border-radius: 10px;
+            /* 丸みを帯びた角 */
+            background-color: #f3f3f3;
+            /* 背景色（未使用分） */
+            border: 2px solid #ddd;
+            /* 薄い枠線 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* 軽いシャドウ */
+            margin-top: 12px;
+            /* 上部の余白 */
+        }
 
-/* プログレスバーの進行状況部分 */
-progress::-webkit-progress-bar {
-    background-color: #f3f3f3; /* 背景色 */
-    border-radius: 10px;
-}
+        /* プログレスバーの進行状況部分 */
+        progress::-webkit-progress-bar {
+            background-color: #f3f3f3;
+            /* 背景色 */
+            border-radius: 10px;
+        }
 
-progress::-webkit-progress-value {
-    background-color: #007bff; /* 進行状況の色（青） */
-    border-radius: 10px;
-    transition: width 0.3s ease; /* 幅の変化にアニメーションを追加 */
-}
+        progress::-webkit-progress-value {
+            background-color: #007bff;
+            /* 進行状況の色（青） */
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            /* 幅の変化にアニメーションを追加 */
+        }
 
-progress::-moz-progress-bar {
-    background-color: #007bff; /* 進行状況の色（青） */
-    border-radius: 10px;
-    transition: width 0.3s ease;
-}
+        progress::-moz-progress-bar {
+            background-color: #007bff;
+            /* 進行状況の色（青） */
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
 
-/* 使用量が100%に達した場合 */
-progress[value="100"]::-webkit-progress-value {
-    background-color: #28a745; /* 進行状況が100%の場合、色を緑に */
-}
+        /* 使用量が100%に達した場合 */
+        progress[value="100"]::-webkit-progress-value {
+            background-color: #28a745;
+            /* 進行状況が100%の場合、色を緑に */
+        }
 
-progress[value="100"]::-moz-progress-bar {
-    background-color: #28a745; /* 進行状況が100%の場合、色を緑に */
-}
-/* 表全体のスタイル */
-table {
-    width: 100%;
-    border-collapse: collapse; /* ボーダーの重なりを防ぐ */
-    margin-top: 20px; /* 上部に余白を追加 */
-    font-family: 'Arial', sans-serif; /* フォントを指定 */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 軽いシャドウをつけて浮いているように */
-}
+        progress[value="100"]::-moz-progress-bar {
+            background-color: #28a745;
+            /* 進行状況が100%の場合、色を緑に */
+        }
 
-/* 表ヘッダーのスタイル */
-th {
-    background-color: #007bff; /* ヘッダー部分の背景色 */
-    color: white; /* ヘッダー文字色 */
-    font-size: 16px; /* フォントサイズ */
-    font-weight: bold; /* 太字 */
-    text-align: left; /* 左寄せ */
-    padding: 12px 16px; /* 内側の余白 */
-    border-bottom: 2px solid #ddd; /* 下にボーダーを追加 */
-}
+        /* 表全体のスタイル */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            /* ボーダーの重なりを防ぐ */
+            margin-top: 20px;
+            /* 上部に余白を追加 */
+            font-family: 'Arial', sans-serif;
+            /* フォントを指定 */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            /* 軽いシャドウをつけて浮いているように */
+        }
 
-/* 表のセルのスタイル */
-td {
-    padding: 12px 16px; /* セル内の余白 */
-    font-size: 14px; /* フォントサイズ */
-    color: #333; /* 文字色 */
-    border-bottom: 1px solid #ddd; /* 行の間に薄いボーダーを追加 */
-    text-align: left; /* 左寄せ */
-}
+        /* 表ヘッダーのスタイル */
+        th {
+            background-color: #007bff;
+            /* ヘッダー部分の背景色 */
+            color: white;
+            /* ヘッダー文字色 */
+            font-size: 16px;
+            /* フォントサイズ */
+            font-weight: bold;
+            /* 太字 */
+            text-align: left;
+            /* 左寄せ */
+            padding: 12px 16px;
+            /* 内側の余白 */
+            border-bottom: 2px solid #ddd;
+            /* 下にボーダーを追加 */
+        }
 
-/* 番号列と内容列の間にボーダーを追加 */
-td:first-child, th:first-child {
-    border-right: 2px solid #ddd; /* 番号列と内容列の間にボーダーを追加 */
-}
+        /* 表のセルのスタイル */
+        td {
+            padding: 12px 16px;
+            /* セル内の余白 */
+            font-size: 14px;
+            /* フォントサイズ */
+            color: #333;
+            /* 文字色 */
+            border-bottom: 1px solid #ddd;
+            /* 行の間に薄いボーダーを追加 */
+            text-align: left;
+            /* 左寄せ */
+        }
 
-/* 行ごとのホバー効果 */
-tr:hover {
-    background-color: #f1f1f1; /* 行にマウスオーバー時の背景色 */
-}
+        /* 番号列と内容列の間にボーダーを追加 */
+        td:first-child,
+        th:first-child {
+            border-right: 2px solid #ddd;
+            /* 番号列と内容列の間にボーダーを追加 */
+        }
 
-/* 偶数行と奇数行で交互に背景色をつけて、視覚的に見やすく */
-tr:nth-child(even) {
-    background-color: #f9f9f9; /* 偶数行の背景色 */
-}
+        /* 行ごとのホバー効果 */
+        tr:hover {
+            background-color: #f1f1f1;
+            /* 行にマウスオーバー時の背景色 */
+        }
 
-tr:nth-child(odd) {
-    background-color: #fff; /* 奇数行の背景色 */
-}
+        /* 偶数行と奇数行で交互に背景色をつけて、視覚的に見やすく */
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+            /* 偶数行の背景色 */
+        }
 
-/* 表のボーダーを改善 */
-th, td {
-    border-left: 1px solid #ddd;
-    border-top: 1px solid #ddd;
-}
+        tr:nth-child(odd) {
+            background-color: #fff;
+            /* 奇数行の背景色 */
+        }
 
-/* 最初の列に太字を適用 */
-td:first-child {
-    font-weight: bold;
-}
+        /* 表のボーダーを改善 */
+        th,
+        td {
+            border-left: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+        }
 
+        /* 最初の列に太字を適用 */
+        td:first-child {
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -242,11 +278,20 @@ td:first-child {
             memoList.innerHTML = ""; // Clear previous entries
 
             for (let i = 1; i <= c; i++) {
+                let url_string = window.location.href;
+                let url = new URL(url_string);
                 const memo = localStorage.getItem("m" + i);
                 if (memo) {
-                    const row = memoList.insertRow();
-                    row.insertCell(0).textContent = i;
-                    row.insertCell(1).textContent = memo;
+                    let data = url.searchParams.get("safe");
+                    if (data == "on") {
+                        const row = memoList.insertRow();
+                        row.insertCell(0).textContent = i;
+                        row.insertCell(1).textContent = memo;
+                    } else {
+                        const row = memoList.insertRow();
+                        row.insertCell(0).innerHTML = i;
+                        row.insertCell(1).innerHTML = memo;
+                    }
                 }
             }
             upro();
