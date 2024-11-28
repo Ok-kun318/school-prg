@@ -81,6 +81,43 @@
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
             /* フォーカス時にアウトラインを表示 */
         }
+        /* プログレスバーの基本スタイル */
+progress {
+    width: 100%; /* 横幅100% */
+    height: 20px; /* 高さ */
+    border-radius: 10px; /* 丸みを帯びた角 */
+    background-color: #f3f3f3; /* 背景色（未使用分） */
+    border: 2px solid #ddd; /* 薄い枠線 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
+    margin-top: 12px; /* 上部の余白 */
+}
+
+/* プログレスバーの進行状況部分 */
+progress::-webkit-progress-bar {
+    background-color: #f3f3f3; /* 背景色 */
+    border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+    background-color: #007bff; /* 進行状況の色（青） */
+    border-radius: 10px;
+    transition: width 0.3s ease; /* 幅の変化にアニメーションを追加 */
+}
+
+progress::-moz-progress-bar {
+    background-color: #007bff; /* 進行状況の色（青） */
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+/* 使用量が100%に達した場合 */
+progress[value="100"]::-webkit-progress-value {
+    background-color: #28a745; /* 進行状況が100%の場合、色を緑に */
+}
+
+progress[value="100"]::-moz-progress-bar {
+    background-color: #28a745; /* 進行状況が100%の場合、色を緑に */
+}
     </style>
 </head>
 
