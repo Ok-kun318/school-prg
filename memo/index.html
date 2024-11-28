@@ -118,6 +118,65 @@ progress[value="100"]::-webkit-progress-value {
 progress[value="100"]::-moz-progress-bar {
     background-color: #28a745; /* 進行状況が100%の場合、色を緑に */
 }
+/* 表全体のスタイル */
+table {
+    width: 100%;
+    border-collapse: collapse; /* ボーダーの重なりを防ぐ */
+    margin-top: 20px; /* 上部に余白を追加 */
+    font-family: 'Arial', sans-serif; /* フォントを指定 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 軽いシャドウをつけて浮いているように */
+}
+
+/* 表ヘッダーのスタイル */
+th {
+    background-color: #007bff; /* ヘッダー部分の背景色 */
+    color: white; /* ヘッダー文字色 */
+    font-size: 16px; /* フォントサイズ */
+    font-weight: bold; /* 太字 */
+    text-align: left; /* 左寄せ */
+    padding: 12px 16px; /* 内側の余白 */
+    border-bottom: 2px solid #ddd; /* 下にボーダーを追加 */
+}
+
+/* 表のセルのスタイル */
+td {
+    padding: 12px 16px; /* セル内の余白 */
+    font-size: 14px; /* フォントサイズ */
+    color: #333; /* 文字色 */
+    border-bottom: 1px solid #ddd; /* 行の間に薄いボーダーを追加 */
+    text-align: left; /* 左寄せ */
+}
+
+/* 番号列と内容列の間にボーダーを追加 */
+td:first-child, th:first-child {
+    border-right: 2px solid #ddd; /* 番号列と内容列の間にボーダーを追加 */
+}
+
+/* 行ごとのホバー効果 */
+tr:hover {
+    background-color: #f1f1f1; /* 行にマウスオーバー時の背景色 */
+}
+
+/* 偶数行と奇数行で交互に背景色をつけて、視覚的に見やすく */
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* 偶数行の背景色 */
+}
+
+tr:nth-child(odd) {
+    background-color: #fff; /* 奇数行の背景色 */
+}
+
+/* 表のボーダーを改善 */
+th, td {
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+}
+
+/* 最初の列に太字を適用 */
+td:first-child {
+    font-weight: bold;
+}
+
     </style>
 </head>
 
@@ -142,7 +201,7 @@ progress[value="100"]::-moz-progress-bar {
     </table>
 
     <script>
-        let c = localStorage.getItem("kazu") ? Number(localStorage.getItem("kazu")) : 0;
+        let c = localStorage.getItem("k") ? Number(localStorage.getItem("k")) : 0;
 
         var limit = 10485760;
 
@@ -171,8 +230,8 @@ progress[value="100"]::-moz-progress-bar {
 
             if (memo) {
                 c += 1;
-                localStorage.setItem("memo" + c, memo);
-                localStorage.setItem("kazu", c);
+                localStorage.setItem("m" + c, memo);
+                localStorage.setItem("k", c);
                 loadmemo();
             }
             upro();
@@ -183,7 +242,7 @@ progress[value="100"]::-moz-progress-bar {
             memoList.innerHTML = ""; // Clear previous entries
 
             for (let i = 1; i <= c; i++) {
-                const memo = localStorage.getItem("memo" + i);
+                const memo = localStorage.getItem("m" + i);
                 if (memo) {
                     const row = memoList.insertRow();
                     row.insertCell(0).textContent = i;
@@ -215,17 +274,17 @@ progress[value="100"]::-moz-progress-bar {
 
         function dellmemo2(num) {
             if (num && num > 0 && num <= c) {
-                localStorage.removeItem("memo" + num);
+                localStorage.removeItem("m" + num);
                 let newC = c - 1;
 
                 for (let i = Number(num) + 1; i <= c; i++) {
-                    const memo = localStorage.getItem("memo" + i);
-                    localStorage.setItem("memo" + (i - 1), memo);
+                    const memo = localStorage.getItem("m" + i);
+                    localStorage.setItem("m" + (i - 1), memo);
                 }
-                localStorage.removeItem("memo" + c);
+                localStorage.removeItem("m" + c);
 
                 c = newC;
-                localStorage.setItem("kazu", c);
+                localStorage.setItem("k", c);
                 loadmemo();
             } else {
                 alert('無効な番号です。');
