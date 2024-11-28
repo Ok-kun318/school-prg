@@ -88,9 +88,9 @@
     <h1>Memo web app</h1>
     <progress style="width:100%;" id="use" max="10485760" value="0"></progress><span id="b">JavaScriptエラー</span><br>
     <div class="container">
-        <input accesskey="t" class="textbox" type="text" name="text" id="textbox" oninput="">
+        <input accesskey="q" class="textbox" type="text" name="text" id="textbox" oninput="">
         <input accesskey="a" class="btn" type="button" value="追加" onclick="addmemo()">
-        <input accesskey="r" class="btn" type="button" value="削除" onclick="delmemo()">
+        <input accesskey="s" class="btn" type="button" value="削除" onclick="delmemo()">
     </div>
 
 
@@ -157,7 +157,7 @@
         }
 
         function delmemo() {
-            const num = prompt('消したいメモの番号');
+            const num = prompt('消したいメモの番号(複数は半角スペースで区切り)');
             if (num === 'all del') {
                 if (confirm('データをすべて削除しますか?')) {
                     localStorage.clear();
@@ -167,7 +167,16 @@
                 upro();
                 return;
             }
+            console.log(num.match(/\d+/g).length)
+            const matches = [...num.matchAll(/\d+/g)];
+            const values = matches.map(match => match[0]);
+            console.log(values)
+            for (let i = 0; i <= num.match(/\d+/g).length - 1; i++) {
+                dellmemo2(values[i] - i)
+            }
+        }
 
+        function dellmemo2(num) {
             if (num && num > 0 && num <= c) {
                 localStorage.removeItem("memo" + num);
                 let newC = c - 1;
