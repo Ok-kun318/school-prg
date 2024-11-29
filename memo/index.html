@@ -135,15 +135,18 @@
 
         /* 表全体のスタイル */
         table {
-            width: 100%;
             border-collapse: collapse;
             /* ボーダーの重なりを防ぐ */
-            margin-top: 20px;
+            margin-top: 0px;
             /* 上部に余白を追加 */
             font-family: 'Arial', sans-serif;
             /* フォントを指定 */
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             /* 軽いシャドウをつけて浮いているように */
+        }
+
+        td:nth-child(n+2) {
+            width: 89.5%;
         }
 
         /* 表ヘッダーのスタイル */
@@ -193,7 +196,7 @@
 
         /* 偶数行と奇数行で交互に背景色をつけて、視覚的に見やすく */
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #eeeeee;
             /* 偶数行の背景色 */
         }
 
@@ -208,6 +211,10 @@
             border-left: 1px solid #ddd;
             border-top: 1px solid #ddd;
             border-right: 1px solid #ddd;
+        }
+
+        tr:nth-last-of-type(0) {
+            width: auto;
         }
 
         /* 最初の列に太字を適用 */
@@ -225,6 +232,7 @@
             cursor: pointer;
             font-size: 14px;
             transition: background-color 0.3s ease;
+            align-items: center;
         }
 
         .edit-btn:hover {
@@ -235,6 +243,28 @@
             outline: none;
             box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3);
         }
+
+        /* 削除ボタンのスタイル */
+        .del-btn {
+            background-color: #ff2e2e;
+            color: rgb(237, 237, 237);
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            margin-left: 1vh;
+        }
+
+        .del-btn:hover {
+            background-color: #d52626;
+        }
+
+        .del-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(220, 22, 22, 0.3);
+        }
     </style>
 </head>
 
@@ -243,7 +273,7 @@
     <progress style="width:100%;" id="use" max="10485760" value="0"></progress><span id="b">JavaScriptエラー</span><br>
     <div class="container">
         <input accesskey="q" class="textbox" autoComplete='off' type="text" name="text" id="textbox"
-            oninput='assist("textbox")''>
+            oninput='assist("textbox")'>
         <input accesskey="a" class="btn" type="button" value="追加" onclick="addmemo()">
         <input accesskey="s" class="btn" type="button" value="削除" onclick="delmemo()">
     </div>
@@ -282,6 +312,7 @@
 
         function assist(id) {
             let element = document.getElementById(id)
+            element.value = element.value.replace("@:;.", "<br>")
             element.value = element.value.replace("@:;b", "<b></b>")
             element.value = element.value.replace("@:;st", `<p style="color: ;"></p>`)
             element.value = element.value.replace("@:/", "<></>")
@@ -309,20 +340,37 @@
                 const memo = localStorage.getItem("m" + i);
                 if (memo) {
                     const row = memoList.insertRow();
-                    row.insertCell(0).textContent = i;
-                    row.insertCell(1).textContent = memo;
+
+                    let url_string = window.location.href;
+                    let url = new URL(url_string);
+                    let data = url.searchParams.get("safe");
+                    if (data == "on") {
+                        row.insertCell(0).textContent = i;
+                        row.insertCell(1).textContent = memo;
+                    } else {
+                        row.insertCell(0).innerHTML = i;
+                        row.insertCell(1).innerHTML = memo;
+                    }
 
                     // 編集ボタンを追加
                     const editCell = row.insertCell(2);
                     const div = document.createElement("div");
                     div.setAttribute("id", "e" + i)
                     editCell.appendChild(div)
+                    div.classList.add("div")
                     const editButton = document.createElement("button");
                     editButton.textContent = "編集";
                     editButton.classList.add("edit-btn")
                     //editButton.setAttribute("id","e"+i)
                     editButton.onclick = () => editMemo(i);
                     div.appendChild(editButton);
+
+                    const delButton = document.createElement("button");
+                    delButton.textContent = "削除";
+                    delButton.classList.add("del-btn")
+                    //editButton.setAttribute("id","e"+i)
+                    delButton.onclick = () => dellmemo2(i);
+                    div.appendChild(delButton);
                 }
             }
             upro();
@@ -331,22 +379,25 @@
         function editMemo(id) {
             const memo = localStorage.getItem("m" + id);
             let element = document.getElementById("e" + id)
-            element.innerHTML = `<input type="text" value="${localStorage.getItem("m" + id)}" id="ei${id}" oninput='assist("ei${id}")'></input>`
-            let element2 = document.getElementById("ei"+id)
-            element2.addEventListener('keydown', event => {
+            element.innerHTML = `<input class="textbox" type="text" value="" id="ei${id}" oninput='assist("ei${id}")'></input>`
+            let element2 = document.getElementById("ei" + id)
+            element2.focus()
+            element2.value = localStorage.getItem("m" + id)
+            document.getElementById("ei" + id).addEventListener('keydown', event => {
                 if (event.key === 'Enter') {
                     editMemo2(id)
                 }
             });
-            element2.focus()
+            //element2.focus()
             //const newMemo = prompt("メモを編集", memo);
         }
 
         function editMemo2(id) {
-            let newMemo= document.getElementById("ei"+id).value
+            let newMemo = document.getElementById("ei" + id).value
             if (newMemo !== null && newMemo !== "") {
-                localStorage.removeItem("m"+id)
+                localStorage.removeItem("m" + id)
                 localStorage.setItem("m" + id, newMemo);
+                loadmemo()
             };
         }
 
@@ -368,7 +419,7 @@
             if (num && num > 0 && num <= c) {
                 localStorage.removeItem("m" + num); let newC = c - 1; for (let i = Number(num)
                     + 1; i <= c; i++) {
-                        const memo = localStorage.getItem("m" + i); localStorage.setItem("m" + (i - 1), memo);
+                    const memo = localStorage.getItem("m" + i); localStorage.setItem("m" + (i - 1), memo);
                 } localStorage.removeItem("m" + c); c = newC; localStorage.setItem("k", c); loadmemo();
             } else {
                 alert('無効な番号です。');
