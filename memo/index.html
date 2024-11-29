@@ -207,11 +207,33 @@
         td {
             border-left: 1px solid #ddd;
             border-top: 1px solid #ddd;
+            border-right: 1px solid #ddd;
         }
 
         /* 最初の列に太字を適用 */
         td:first-child {
             font-weight: bold;
+        }
+
+        /* 編集ボタンのスタイル */
+        .edit-btn {
+            background-color: #ffc107;
+            color: black;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background-color: #e0a800;
+        }
+
+        .edit-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3);
         }
     </style>
 </head>
@@ -220,17 +242,18 @@
     <h1>メモ帳</h1>
     <progress style="width:100%;" id="use" max="10485760" value="0"></progress><span id="b">JavaScriptエラー</span><br>
     <div class="container">
-        <input accesskey="q" class="textbox" autoComplete='none' type="text" name="text" id="textbox" oninput="assist()">
+        <input accesskey="q" class="textbox" autoComplete='off' type="text" name="text" id="textbox"
+            oninput='assist("textbox")''>
         <input accesskey="a" class="btn" type="button" value="追加" onclick="addmemo()">
         <input accesskey="s" class="btn" type="button" value="削除" onclick="delmemo()">
     </div>
-
 
     <table>
         <thead>
             <tr>
                 <th>番号</th>
                 <th>内容</th>
+                <th>操作</th>
             </tr>
         </thead>
         <tbody id="memoList"></tbody>
@@ -238,7 +261,6 @@
 
     <script>
         let c = localStorage.getItem("k") ? Number(localStorage.getItem("k")) : 0;
-
         var limit = 10485760;
 
         function upro() {
@@ -258,11 +280,11 @@
             return total; // バイト単位
         }
 
-        function assist() {
-            let element = document.getElementById("textbox")
-            element.value = element.value.replace("@:;b","<b></b>")
-            element.value = element.value.replace("@:;st",`<p style="color: ;"></p>`)
-            element.value = element.value.replace("@:/","<></>")
+        function assist(id) {
+            let element = document.getElementById(id)
+            element.value = element.value.replace("@:;b", "<b></b>")
+            element.value = element.value.replace("@:;st", `<p style="color: ;"></p>`)
+            element.value = element.value.replace("@:/", "<></>")
         }
 
         function addmemo() {
@@ -278,28 +300,54 @@
             }
             upro();
         }
+
         function loadmemo() {
             const memoList = document.getElementById("memoList");
             memoList.innerHTML = ""; // Clear previous entries
 
             for (let i = 1; i <= c; i++) {
-                let url_string = window.location.href;
-                let url = new URL(url_string);
                 const memo = localStorage.getItem("m" + i);
                 if (memo) {
-                    let data = url.searchParams.get("safe");
-                    if (data == "on") {
-                        const row = memoList.insertRow();
-                        row.insertCell(0).textContent = i;
-                        row.insertCell(1).textContent = memo;
-                    } else {
-                        const row = memoList.insertRow();
-                        row.insertCell(0).innerHTML = i;
-                        row.insertCell(1).innerHTML = memo;
-                    }
+                    const row = memoList.insertRow();
+                    row.insertCell(0).textContent = i;
+                    row.insertCell(1).textContent = memo;
+
+                    // 編集ボタンを追加
+                    const editCell = row.insertCell(2);
+                    const div = document.createElement("div");
+                    div.setAttribute("id", "e" + i)
+                    editCell.appendChild(div)
+                    const editButton = document.createElement("button");
+                    editButton.textContent = "編集";
+                    editButton.classList.add("edit-btn")
+                    //editButton.setAttribute("id","e"+i)
+                    editButton.onclick = () => editMemo(i);
+                    div.appendChild(editButton);
                 }
             }
             upro();
+        }
+
+        function editMemo(id) {
+            const memo = localStorage.getItem("m" + id);
+            let element = document.getElementById("e" + id)
+            element.innerHTML = `<input type="text" value="${localStorage.getItem("m" + id)}" id="ei${id}" oninput='assist("ei${id}")'></input>`
+            let element2 = document.getElementById("ei"+id)
+            element2.addEventListener('keydown', event => {
+                if (event.key === 'Enter') {
+                    editMemo2(id)
+                }
+            });
+            element2.focus()
+            //const newMemo = prompt("メモを編集", memo);
+        }
+
+        function editMemo2(id) {
+            let newMemo= document.getElementById("ei"+id).value
+            if (newMemo !== null && newMemo !== "") {
+                localStorage.removeItem("m"+id)
+                localStorage.setItem("m" + id, newMemo);
+            };
         }
 
         function delmemo() {
@@ -313,35 +361,19 @@
                 upro();
                 return;
             }
-            console.log(num.match(/\d+/g).length)
             const matches = [...num.matchAll(/\d+/g)];
             const values = matches.map(match => match[0]);
-            console.log(values)
-            for (let i = 0; i <= num.match(/\d+/g).length - 1; i++) {
-                dellmemo2(values[i] - i)
-            }
-        }
-
-        function dellmemo2(num) {
+            for (let i = 0; i <= num.match(/\d+/g).length - 1; i++) { dellmemo2(values[i] - i) }
+        } function dellmemo2(num) {
             if (num && num > 0 && num <= c) {
-                localStorage.removeItem("m" + num);
-                let newC = c - 1;
-
-                for (let i = Number(num) + 1; i <= c; i++) {
-                    const memo = localStorage.getItem("m" + i);
-                    localStorage.setItem("m" + (i - 1), memo);
-                }
-                localStorage.removeItem("m" + c);
-
-                c = newC;
-                localStorage.setItem("k", c);
-                loadmemo();
+                localStorage.removeItem("m" + num); let newC = c - 1; for (let i = Number(num)
+                    + 1; i <= c; i++) {
+                        const memo = localStorage.getItem("m" + i); localStorage.setItem("m" + (i - 1), memo);
+                } localStorage.removeItem("m" + c); c = newC; localStorage.setItem("k", c); loadmemo();
             } else {
                 alert('無効な番号です。');
             }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
+        } document.addEventListener('DOMContentLoaded', () => {
             loadmemo();
             document.getElementById('textbox').addEventListener('keydown', event => {
                 if (event.key === 'Enter') {
